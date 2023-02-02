@@ -52,7 +52,6 @@ function crc32_buf_8(buf: Int32Array, seed: number): number {
 }
 
 export function crc32_buf(buf: Int32Array, seed: number): number {
-  if (buf.length > 10000) return crc32_buf_8(buf, seed);
   let C = seed ^ -1;
   const L = buf.length - 3;
   let i;

@@ -3,7 +3,7 @@ import * as struct from "./struct";
 import { crc32_buf } from "./crc32";
 
 export const PNG_HEADER = "\x89PNG\x0d\x0a\x1a\x0a";
-const EXIF_MARKER = "eXIf";
+const EXIF_MARKER = "tEXt";
 
 interface Chunk {
   fourcc: string;
@@ -100,7 +100,7 @@ function insert_exif_into_chunks(chunks: Chunk[], exif_bytes: string): Chunk[] {
   if (chunk_index >= 0) {
     chunks.splice(chunk_index, 1, exif_chunk);
   } else {
-    chunks.splice(0, 0, exif_chunk);
+    chunks.splice(-1, 0, exif_chunk);
   }
 
   return chunks;
