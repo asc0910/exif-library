@@ -55,7 +55,6 @@ export const mergeSegments = (
   const additionalAPP1ExifSegments: Array<number> = [];
 
   segments.forEach(function(segment, i) {
-    // Replace first occurence of APP1:Exif segment
     if (
       segment.slice(0, 2) == "\xff\xe1" &&
       segment.slice(4, 10) == "Exif\x00\x00"

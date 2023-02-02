@@ -6,3 +6,4 @@ export { load } from "./load";
 export { dump } from "./dump";
 export { insert } from "./insert";
 export { remove } from "./remove";
+export { toHexFormat } from "./utils";

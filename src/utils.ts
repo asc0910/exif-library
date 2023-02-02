@@ -36,3 +36,12 @@ export const copyObject = (obj: object): object => {
   Object.assign(copied, obj);
   return copied;
 };
+
+
+export const toHexFormat = (s: string) => {
+  let result = ''
+  for (let i = 0; i < s.length; i++) {
+    result += '\\x' + ('00' + s.charCodeAt(i).toString(16)).slice(-2)
+  }
+  return result;
+}

@@ -3,6 +3,7 @@ import * as struct from "./struct";
 import { IExif, IExifElement } from "./interfaces";
 import { TagNumbers } from "./constants";
 import { ExifReader } from "./exif_reader";
+import png from "./png";
 
 export const load = (bytes: string): IExif => {
   const exifBytes = getExifBytes(bytes);
@@ -84,11 +85,17 @@ export const load = (bytes: string): IExif => {
 const getExifBytes = (bytes: string): string => {
   let exifBytes;
   if (typeof bytes == "string") {
-    if (bytes.slice(0, 2) == "\xff\xd8") {
+    if (
+      bytes.slice(0, 2) == "\xff\xd8" || // jpeg
+      (bytes.slice(0, 4) == "RIFF" && bytes.slice(8, 12) === "WEBP") || // webp
+      bytes.slice(0, png.PNG_HEADER.length) === png.PNG_HEADER
+    ) {
       exifBytes = bytes;
     } else if (
       bytes.slice(0, 23) == "data:image/jpeg;base64," ||
-      bytes.slice(0, 22) == "data:image/jpg;base64,"
+      bytes.slice(0, 22) == "data:image/jpg;base64," ||
+      bytes.slice(0, 23) == "data:image/webp;base64," ||
+      bytes.slice(0, 22) == "data:image/png;base64,"
     ) {
       exifBytes = utils.atob(bytes.split(",")[1]);
     } else if (bytes.slice(0, 4) == "Exif") {

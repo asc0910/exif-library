@@ -3,7 +3,8 @@ import * as struct from "./struct";
 import * as segment from "./segment";
 import { TagsFieldNames, IExifElement } from "./interfaces";
 import { Tags } from "./constants";
-
+import webp from "./webp";
+import png from "./png";
 export class ExifReader {
   tiftag: string;
   endianMark: string;
@@ -22,15 +23,27 @@ export class ExifReader {
     } else if (["\x49\x49", "\x4d\x4d"].indexOf(exifBinary.slice(0, 2)) > -1) {
       // TIFF
       this.tiftag = exifBinary;
+    } else if (
+      exifBinary.slice(0, 4) === "RIFF" &&
+      exifBinary.slice(8, 12) === "WEBP"
+    ) {
+      // webp
+      this.tiftag = webp.get_exif(exifBinary);
+    } else if (exifBinary.slice(0, png.PNG_HEADER.length) === png.PNG_HEADER) {
+      // png
+      this.tiftag = png.get_exif(exifBinary);
     } else if (exifBinary.slice(0, 4) == "Exif") {
       // Exif
       this.tiftag = exifBinary.slice(6);
     } else {
-      throw new Error("Given file is neither JPEG nor TIFF.");
+      throw new Error("Given file is neither JPEG, TIFF, PNG or WEBP.");
     }
   }
 
   getIfd = (pointer: number, ifdName: TagsFieldNames): IExifElement => {
+    if (this.tiftag.length < pointer + 2) {
+      return null;
+    }
     const tagCount = struct.unpack(
       this.endianMark + "H",
       this.tiftag.slice(pointer, pointer + 2)
@@ -77,6 +90,9 @@ export class ExifReader {
   };
 
   getFirstIfdPointer = (pointer: number, ifdName: TagsFieldNames): string => {
+    if (this.tiftag.length < pointer + 2) {
+      return null;
+    }
     const tagCount = struct.unpack(
       this.endianMark + "H",
       this.tiftag.slice(pointer, pointer + 2)
