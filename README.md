@@ -1,7 +1,7 @@
 exif-library
 ============
 
-Exif library in JavaScript. Read and Modify exif.
+Exif library in JavaScript. Read and Modify exif. (with support png and webp)
 
 **Node.js**                                                                                                        |**browser**
 -------------------------------------------------------------------------------------------------------------------|-----------

@@ -1,6 +1,6 @@
 {
-  "name": "exif-library",
-  "version": "2.0.0-alpha.0",
+  "name": "@asc0910/exif-library",
+  "version": "2.0.1",
   "description": "Read and write exif.",
   "main": "dist/exif-library.js",
   "types": "dist/index.d.ts",
@@ -14,7 +14,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/hMatoba/exif-library.git"
+    "url": "https://github.com/asc0910/exif-library.git"
   },
   "keywords": [
     "jpeg",
@@ -27,8 +27,7 @@
     "lint": "eslint \"*/**/*.ts\"",
     "lint-auto-fix": "eslint \"*/**/*.ts\" --fix",
     "node-test": "jest --config=jest.node.config.js",
-    "browser-test": "jest --config=jest.puppeteer.config.js",
-    "test": "npm run node-test && npm run browser-test",
+    "test": "npm run node-test",
     "build": "rollup -c",
     "build:watch": "rollup -cw",
     "prepare": "npm run build",
@@ -37,12 +36,12 @@
     "version": "npm run format && git add -A",
     "postversion": "git push && git push --tags"
   },
-  "author": "hMatoba, Joachim Holwech",
+  "author": "hMatoba, Joachim Holwech, asc0910",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hMatoba/exif-library/issues"
+    "url": "https://github.com/asc0910/exif-library/issues"
   },
-  "homepage": "https://github.com/hMatoba/exif-library",
+  "homepage": "https://github.com/asc0910/exif-library",
   "devDependencies": {
     "@types/node": "^13.1.2",
     "@typescript-eslint/eslint-plugin": "^2.14.0",

@@ -37,11 +37,10 @@ export const copyObject = (obj: object): object => {
   return copied;
 };
 
-
 export const toHexFormat = (s: string) => {
-  let result = ''
+  let result = "";
   for (let i = 0; i < s.length; i++) {
-    result += '\\x' + ('00' + s.charCodeAt(i).toString(16)).slice(-2)
+    result += "\\x" + ("00" + s.charCodeAt(i).toString(16)).slice(-2);
   }
   return result;
-}
+};
