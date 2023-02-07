@@ -7,7 +7,7 @@ const EXIF_MARKER = "tEXt";
 
 interface Chunk {
   fourcc: string;
-  length_bytes: string;
+  lengthBytes: string;
   data: string;
   crc: string;
 }
@@ -22,30 +22,27 @@ function split(data: string): Chunk[] {
   const CHUNK_FOURCC_LENGTH = 4;
   const LENGTH_BYTES_LENGTH = 4;
   const CRC_LENGTH = 4;
-  const file_size = data.length;
+  const fileSize = data.length;
   const END_SIGN = "IEND";
 
   const chunks: Chunk[] = [];
-  while (pointer + CHUNK_FOURCC_LENGTH + LENGTH_BYTES_LENGTH < file_size) {
-    const data_length_bytes = data.slice(
-      pointer,
-      pointer + LENGTH_BYTES_LENGTH
-    );
-    const data_length = struct.unpack(">L", data_length_bytes)[0];
+  while (pointer + CHUNK_FOURCC_LENGTH + LENGTH_BYTES_LENGTH < fileSize) {
+    const dataLengthBytes = data.slice(pointer, pointer + LENGTH_BYTES_LENGTH);
+    const dataLength = struct.unpack(">L", dataLengthBytes)[0];
     pointer += LENGTH_BYTES_LENGTH;
 
     const fourcc = data.slice(pointer, pointer + CHUNK_FOURCC_LENGTH);
     pointer += CHUNK_FOURCC_LENGTH;
 
-    const chunk_data = data.slice(pointer, pointer + data_length);
-    pointer += data_length;
+    const chunkData = data.slice(pointer, pointer + dataLength);
+    pointer += dataLength;
 
     const crc = data.slice(pointer, pointer + CRC_LENGTH);
     pointer += CRC_LENGTH;
     chunks.push({
       fourcc: fourcc,
-      length_bytes: data_length_bytes,
-      data: chunk_data,
+      lengthBytes: dataLengthBytes,
+      data: chunkData,
       crc: crc
     });
 
@@ -57,17 +54,17 @@ function split(data: string): Chunk[] {
   return chunks;
 }
 
-function merge_chunks(chunks: Chunk[]): string {
+function mergeChunks(chunks: Chunk[]): string {
   const merged = chunks
     .map(c => {
-      return c.length_bytes + c.fourcc + c.data + c.crc;
+      return c.lengthBytes + c.fourcc + c.data + c.crc;
     })
     .join("");
 
   return merged;
 }
 
-function get_exif(data: string): string | undefined {
+function getExif(data: string): string | undefined {
   if (data.slice(0, 8) != PNG_HEADER) {
     throw new Error("Not PNG");
   }
@@ -77,57 +74,57 @@ function get_exif(data: string): string | undefined {
   return chunk && chunk.data;
 }
 
-function insert_exif_into_chunks(chunks: Chunk[], exif_bytes: string): Chunk[] {
-  const exif_length_bytes = struct.pack("<L", [exif_bytes.length]);
-  const exif_data = EXIF_MARKER + exif_bytes;
-  const exif_data_array = [];
-  for (let i = 0; i < exif_data.length; i++) {
-    exif_data_array.push(exif_data.charCodeAt(i));
+function insertExifIntoChunks(chunks: Chunk[], exifBytes: string): Chunk[] {
+  const exifLengthBytes = struct.pack("<L", [exifBytes.length]);
+  const exifData = EXIF_MARKER + exifBytes;
+  const exifDataArray = [];
+  for (let i = 0; i < exifData.length; i++) {
+    exifDataArray.push(exifData.charCodeAt(i));
   }
   const crc = struct
-    .pack("<L", [crc32_buf(exif_data_array as any, 0)])
+    .pack("<L", [crc32_buf(exifDataArray as any, 0)])
     .split("")
     .reverse()
     .join("");
-  const exif_chunk: Chunk = {
+  const exifChunk: Chunk = {
     fourcc: EXIF_MARKER,
-    length_bytes: exif_length_bytes,
-    data: exif_bytes,
+    lengthBytes: exifLengthBytes,
+    data: exifBytes,
     crc: crc
   };
 
-  const chunk_index = chunks.findIndex(c => c.fourcc === EXIF_MARKER);
-  if (chunk_index >= 0) {
-    chunks.splice(chunk_index, 1, exif_chunk);
+  const chunkIndex = chunks.findIndex(c => c.fourcc === EXIF_MARKER);
+  if (chunkIndex >= 0) {
+    chunks.splice(chunkIndex, 1, exifChunk);
   } else {
-    chunks.splice(-1, 0, exif_chunk);
+    chunks.splice(-1, 0, exifChunk);
   }
 
   return chunks;
 }
 
-function insert(png_bytes: string, exif_bytes: string): string {
+function insert(pngBytes: string, exifBytes: string): string {
   const EXIF_CODE = "Exif\x00\x00";
-  if (exif_bytes.startsWith(EXIF_CODE)) {
-    exif_bytes = exif_bytes.slice(6);
+  if (exifBytes.startsWith(EXIF_CODE)) {
+    exifBytes = exifBytes.slice(6);
   }
-  const chunks = split(png_bytes);
-  const new_chunks = insert_exif_into_chunks(chunks, exif_bytes);
-  const merged = merge_chunks(new_chunks);
-  const new_png_bytes = PNG_HEADER + merged;
-  return new_png_bytes;
+  const chunks = split(pngBytes);
+  const newChunks = insertExifIntoChunks(chunks, exifBytes);
+  const merged = mergeChunks(newChunks);
+  const newPngBytes = PNG_HEADER + merged;
+  return newPngBytes;
 }
 
-function remove(png_bytes: string): string {
-  const chunks = split(png_bytes).filter(c => c.fourcc !== EXIF_MARKER);
-  const merged = merge_chunks(chunks);
-  const new_png_bytes = PNG_HEADER + merged;
-  return new_png_bytes;
+function remove(pngBytes: string): string {
+  const chunks = split(pngBytes).filter(c => c.fourcc !== EXIF_MARKER);
+  const merged = mergeChunks(chunks);
+  const newPngBytes = PNG_HEADER + merged;
+  return newPngBytes;
 }
 
 export default {
   PNG_HEADER,
   insert,
   remove,
-  get_exif
+  getExif
 };

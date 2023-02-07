@@ -28,10 +28,10 @@ export class ExifReader {
       exifBinary.slice(8, 12) === "WEBP"
     ) {
       // webp
-      this.tiftag = webp.get_exif(exifBinary);
+      this.tiftag = webp.getExif(exifBinary);
     } else if (exifBinary.slice(0, png.PNG_HEADER.length) === png.PNG_HEADER) {
       // png
-      this.tiftag = png.get_exif(exifBinary);
+      this.tiftag = png.getExif(exifBinary);
     } else if (exifBinary.slice(0, 4) == "Exif") {
       // Exif
       this.tiftag = exifBinary.slice(6);
