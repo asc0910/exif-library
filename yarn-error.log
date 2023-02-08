@@ -1,0 +1,101 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\Lyfei\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js publish
+
+PATH: 
+  C:\Python310\Scripts\;C:\Python310\;C:\Program Files\ImageMagick-7.0.9-Q16;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Embarcadero\Studio\20.0\bin;C:\Users\Public\Documents\Embarcadero\Studio\20.0\Bpl;C:\Program Files (x86)\Embarcadero\Studio\20.0\bin64;C:\Users\Public\Documents\Embarcadero\Studio\20.0\Bpl\Win64;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\dotnet\;C:\ProgramData\chocolatey\bin;C:\Program Files\Git\cmd;C:\Program Files\TortoiseGit\bin;C:\Python27;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Program Files\PuTTY\;C:\Users\Lyfei\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\Go\bin;C:\Program Files\SafeNet\Authentication\SAC\x64;C:\Program Files\SafeNet\Authentication\SAC\x32;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Redis\;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Users\Lyfei\AppData\Local\Microsoft\WindowsApps;C:\Users\Lyfei\.dotnet\tools;C:\Users\Lyfei\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Lyfei\AppData\Roaming\npm;C:\Users\Lyfei\AppData\Local\Programs\EmEditor;C:\Users\Lyfei\AppData\Local\GitHubDesktop\bin;C:\Users\Lyfei\anaconda3\Library\bin\;C:\Users\Lyfei\anaconda3\Scripts;C:\Users\Lyfei\anaconda3\condabin;C:\Users\Lyfei\anaconda3;C:\Users\Lyfei\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\Lyfei\go\bin;c:\users\lyfei\.local\bin;c:\users\lyfei\appdata\roaming\python\python310\scripts;C:\foundry;C:\vips-dev\bin;C:\xampp\php;
+
+Yarn version: 
+  1.22.17
+
+Node version: 
+  16.15.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: canceled
+      at Interface.<anonymous> (C:\Users\Lyfei\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:137143:13)
+      at Interface.emit (node:events:527:28)
+      at Interface._ttyWrite (node:readline:1081:16)
+      at ReadStream.onkeypress (node:readline:288:10)
+      at ReadStream.emit (node:events:527:28)
+      at emitKeys (node:internal/readline/utils:358:14)
+      at emitKeys.next (<anonymous>)
+      at ReadStream.onData (node:internal/readline/emitKeypressEvents:61:36)
+      at ReadStream.emit (node:events:527:28)
+      at addChunk (node:internal/streams/readable:315:12)
+
+npm manifest: 
+  {
+    "name": "@asc0910/exif-library",
+    "version": "2.0.2",
+    "description": "Read and write exif.",
+    "main": "dist/exif-library.js",
+    "types": "dist/index.d.ts",
+    "files": [
+      "dist/exif-library.js",
+      "dist/exif-library.js.map",
+      "dist/*.d.ts",
+      "LICENSE.txt",
+      "README.md",
+      "package.json"
+    ],
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/asc0910/exif-library.git"
+    },
+    "keywords": [
+      "jpeg",
+      "exif",
+      "node",
+      "browser"
+    ],
+    "scripts": {
+      "format": "prettier --write \"src/**/*.ts\"",
+      "lint": "eslint \"*/**/*.ts\"",
+      "lint-auto-fix": "eslint \"*/**/*.ts\" --fix",
+      "node-test": "jest --config=jest.node.config.js",
+      "test": "npm run node-test",
+      "build": "rollup -c",
+      "build:watch": "rollup -cw",
+      "prepare": "npm run build",
+      "prepublishOnly": "npm test && npm run lint",
+      "preversion": "npm run lint",
+      "version": "npm run format && git add -A",
+      "postversion": "git push && git push --tags"
+    },
+    "author": "hMatoba, Joachim Holwech, asc0910",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/asc0910/exif-library/issues"
+    },
+    "homepage": "https://github.com/asc0910/exif-library",
+    "devDependencies": {
+      "@types/node": "^13.1.2",
+      "@typescript-eslint/eslint-plugin": "^2.14.0",
+      "@typescript-eslint/parser": "^2.14.0",
+      "eslint": "^6.8.0",
+      "eslint-config-airbnb": "^18.0.1",
+      "eslint-config-prettier": "^6.9.0",
+      "eslint-plugin-import": "^2.19.1",
+      "eslint-plugin-prettier": "^3.1.2",
+      "jest": "^24.9.0",
+      "jest-puppeteer": "^4.4.0",
+      "jpeg-js": "^0.3.6",
+      "prettier": "^1.19.1",
+      "puppeteer": "^2.0.0",
+      "rimraf": "^3.0.0",
+      "rollup": "^1.27.14",
+      "rollup-plugin-eslint": "^7.0.0",
+      "rollup-plugin-typescript2": "^0.25.3",
+      "typescript": "^3.7.4"
+    },
+    "dependencies": {}
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

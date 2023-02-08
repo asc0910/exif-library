@@ -5,13 +5,20 @@ import { TagNumbers } from "./constants";
 import { ExifReader } from "./exif_reader";
 import png from "./png";
 
-export const load = (bytes: string): IExif => {
+export const load = (bytes: string): any => {
   const exifBytes = getExifBytes(bytes);
 
   const exifObj: IExif = {};
   const exifReader = new ExifReader(exifBytes);
   if (exifReader.tiftag === null) {
     return exifObj;
+  }
+
+  if (exifReader.png) {
+    const [key, value] = exifReader.tiftag.split("\x00");
+    return {
+      [key]: value
+    };
   }
   exifReader.setEndianMark();
 

@@ -8,6 +8,7 @@ import png from "./png";
 export class ExifReader {
   tiftag: string;
   endianMark: string;
+  png: boolean;
 
   constructor(exifBinary: string) {
     let segments, app1;
@@ -32,6 +33,7 @@ export class ExifReader {
     } else if (exifBinary.slice(0, png.PNG_HEADER.length) === png.PNG_HEADER) {
       // png
       this.tiftag = png.getExif(exifBinary);
+      this.png = true;
     } else if (exifBinary.slice(0, 4) == "Exif") {
       // Exif
       this.tiftag = exifBinary.slice(6);

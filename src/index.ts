@@ -7,3 +7,4 @@ export { dump } from "./dump";
 export { insert } from "./insert";
 export { remove } from "./remove";
 export { toHexFormat } from "./utils";
+export { loadCustomMeta, insertCustomMeta } from "./custom";

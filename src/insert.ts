@@ -6,9 +6,6 @@ import png from "./png";
 
 export const insert = (exifBytes: string, imageBytes: string): string => {
   let base64Encoded = false;
-  if (exifBytes.slice(0, 6) != "\x45\x78\x69\x66\x00\x00") {
-    throw new Error("Given data is not exif data");
-  }
   let fileType = "";
   if (imageBytes.slice(0, 2) == "\xff\xd8") {
     fileType = "jpeg";
@@ -56,7 +53,6 @@ export const insert = (exifBytes: string, imageBytes: string): string => {
     }
     return newBytes;
   } else if (fileType === "png") {
-    exifBytes = exifBytes.slice(6);
     let newBytes = png.insert(imageBytes, exifBytes);
     if (base64Encoded) {
       newBytes = "data:image/webp;base64," + utils.btoa(newBytes);

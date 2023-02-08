@@ -75,7 +75,7 @@ function getExif(data: string): string | undefined {
 }
 
 function insertExifIntoChunks(chunks: Chunk[], exifBytes: string): Chunk[] {
-  const exifLengthBytes = struct.pack("<L", [exifBytes.length]);
+  const exifLengthBytes = struct.pack(">L", [exifBytes.length]);
   const exifData = EXIF_MARKER + exifBytes;
   const exifDataArray = [];
   for (let i = 0; i < exifData.length; i++) {
@@ -94,6 +94,7 @@ function insertExifIntoChunks(chunks: Chunk[], exifBytes: string): Chunk[] {
   };
 
   const chunkIndex = chunks.findIndex(c => c.fourcc === EXIF_MARKER);
+  console.log(chunkIndex);
   if (chunkIndex >= 0) {
     chunks.splice(chunkIndex, 1, exifChunk);
   } else {

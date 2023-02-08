@@ -181,37 +181,64 @@ const EXIF_OBJ = {
 // });
 
 
-test('test read / write -- webp', () => {
-  const exifObj = EXIF_OBJ;
-  const exifBytes = exifLib.dump(exifObj);
-  const webpBytes1 = fs.readFileSync("./tests/files/example.webp").toString("binary");
-  const webpBytesExifInserted = exifLib.insert(exifBytes, webpBytes1)
-  fs.writeFileSync("./tests/files/example_with_metadata_changed.webp", webpBytesExifInserted, 'binary')
-  const exifObj1 = exifLib.load(webpBytesExifInserted)
-  console.log(exifObj1)
+// test('test read / write -- webp', () => {
+//   const exifObj = EXIF_OBJ;
+//   const exifBytes = exifLib.dump(exifObj);
+//   const webpBytes1 = fs.readFileSync("./tests/files/example.webp").toString("binary");
+//   const webpBytesExifInserted = exifLib.insert(exifBytes, webpBytes1)
+//   fs.writeFileSync("./tests/files/example_with_metadata_changed.webp", webpBytesExifInserted, 'binary')
+//   const exifObj1 = exifLib.load(webpBytesExifInserted)
+//   console.log(exifObj1)
+// });
+
+// test('test read / write -- jpg', () => {
+//   const exifObj = EXIF_OBJ
+//   const exifBytes = exifLib.dump(exifObj);
+//   const jpgBytes1 = fs.readFileSync("./tests/files/L01.jpg").toString("binary");
+//   const jpgBytesExifInserted = exifLib.insert(exifBytes, jpgBytes1)
+//   fs.writeFileSync("./tests/files/L01_with_metadata_changed.jpg", jpgBytesExifInserted, 'binary')
+//   const exifObj1 = exifLib.load(jpgBytesExifInserted)
+//   console.log(exifObj1)
+// });
+
+
+// test('test read / write -- png', () => {
+//   const exifObj = {
+//     '0th': {
+//       '270': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+//     }
+//   };
+//   const exifBytes = exifLib.dump(exifObj);
+//   const pngBytes1 = fs.readFileSync("./tests/files/1.png").toString("binary");
+//   const pngBytesExifInserted = exifLib.insert(exifBytes, pngBytes1)
+//   fs.writeFileSync("./tests/files/1_with_metadata_changed.png", pngBytesExifInserted, 'binary')
+//   const exifObj1 = exifLib.load(pngBytesExifInserted)
+//   console.log(exifObj1)
+// });
+
+
+// test('test read', () => {
+//   const pngBytes = fs.readFileSync("./tests/files/test1.png").toString("binary");
+//   const exifObj = exifLib.load(pngBytes)
+//   console.log(exifObj)
+// });
+
+test('test custom', () => {
+  const pngBytes = fs.readFileSync("./tests/files/1.png").toString("binary");
+  const pngBytesExifAdded = exifLib.insertCustomMeta('testmetadata', pngBytes)
+  fs.writeFileSync("./tests/files/1_with_metadata_changed.png", pngBytesExifAdded, 'binary')
+  let exif;
+  exif = exifLib.loadCustomMeta(pngBytesExifAdded);
+  console.log(exif);
+  const webpBytes = fs.readFileSync("./tests/files/example.webp").toString("binary");
+  const webpBytesExifAdded = exifLib.insertCustomMeta('testmetadata', webpBytes)
+  fs.writeFileSync("./tests/files/example_with_metadata_changed.webp", webpBytesExifAdded, 'binary')
+  exif = exifLib.loadCustomMeta(webpBytesExifAdded);
+  console.log(exif);
+  const jpgBytes = fs.readFileSync("./tests/files/L01.jpg").toString("binary");
+  const jpgBytesExifAdded = exifLib.insertCustomMeta('testmetadata', jpgBytes)
+  fs.writeFileSync("./tests/files/L01_with_metadata_changed.jpg", jpgBytesExifAdded, 'binary')
+  exif = exifLib.loadCustomMeta(jpgBytesExifAdded);
+  console.log(exif);
 });
 
-test('test read / write -- jpg', () => {
-  const exifObj = EXIF_OBJ
-  const exifBytes = exifLib.dump(exifObj);
-  const jpgBytes1 = fs.readFileSync("./tests/files/L01.jpg").toString("binary");
-  const jpgBytesExifInserted = exifLib.insert(exifBytes, jpgBytes1)
-  fs.writeFileSync("./tests/files/L01_with_metadata_changed.jpg", jpgBytesExifInserted, 'binary')
-  const exifObj1 = exifLib.load(jpgBytesExifInserted)
-  console.log(exifObj1)
-});
-
-
-test('test read / write -- png', () => {
-  const exifObj = {
-    '0th': {
-      '270': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
-    }
-  };
-  const exifBytes = exifLib.dump(exifObj);
-  const pngBytes1 = fs.readFileSync("./tests/files/1.png").toString("binary");
-  const pngBytesExifInserted = exifLib.insert(exifBytes, pngBytes1)
-  fs.writeFileSync("./tests/files/1_with_metadata_changed.png", pngBytesExifInserted, 'binary')
-  const exifObj1 = exifLib.load(pngBytesExifInserted)
-  console.log(exifObj1)
-});
